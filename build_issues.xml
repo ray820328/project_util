@@ -1,0 +1,60 @@
+<project name="IssuePack" default="dist" basedir=".">
+	<property file="build_issues.properties" />
+
+	<property name="src.dir" value="src" />
+	<property name="src.config.dir" value="config" />
+	<property name="build.dir" location="build_issues" />
+	<property name="build.dir.bin" value="bin" />
+	<property name="build.dir.lib" value="lib" />
+
+	<path id="project.classpath">
+		<fileset dir="${ant.home}/lib" includes="**/*.jar"></fileset>
+		<pathelement path="${build.dir.bin}" />
+	</path>
+	<!-- ================================= Build Apps =============================== -->
+
+	<target name="init" description="init the build task...">
+		<!-- delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/ -->
+	</target>
+
+	<target name="dist" description="the entry of the project." depends="init,check_task,compile,package">
+		<echo>completly, run ok...</echo>
+	</target>
+
+	<taskdef name="issuetask" classname="org.ray.pack.PackTask"  />
+	<target name="check_task" description="">
+		<sleep seconds="1"/>
+		<issuetask revisionFrom="${svn.revision.from}" revisionTo="${svn.revision.to}" 
+			svnUri="${svn.project.url}" username="${svn.user}" password="${svn.password}"
+			svnCheckout="${svn.update}" packDirDest="${local.pack.dir}"
+			projectHome="${local.project.dir}" packDirSource="${svn.local.project.dir}" 
+			batExportSvnLog="${bat.export.svn.log}" batSvnUpdate="${bat.svn.update}"
+			issueFile="${jira.issue.file}" logFile="${svn.log.file}" 
+			runAs="${run.method}" mode="${mode}"/>
+	</target>
+
+	<!-- taskdef name="svn" classname="org.tigris.subversion.svnant.SvnTask">
+	  <classpath refid="ant.svn.classpath" />
+	 </taskdef>
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml"/>
+	<svnSetting id="setting" svnkit="true" username="${svn.user}" password="${svn.password}" javahl="false" / -->
+
+	<target name="compile" description="Compile source files">
+
+	</target>
+
+	<!-- ================================= pack Apps =============================== -->
+
+	<target name="package" description="Build Application">
+		<zip basedir="${local.pack.dir}" zipfile="${local.project.dir}/${ant.project.name}.zip"/>
+	</target>
+
+	<!-- ================================= Deploy Apps =============================== -->
+
+	<!-- ================================= Distribute Apps =============================== -->
+
+	<target name="distribute">
+	</target>
+
+</project>

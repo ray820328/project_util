@@ -1,0 +1,38 @@
+<project name="packUtil" default="dist" basedir=".">
+	<property name="src.dir" value="src" />
+	<property name="src.lib.dir" value="lib" />
+	<property name="build.dir" location="build" />
+	<property name="build.bin.dir" value="${build.dir}/bin" />
+	<property name="jar.name" value="${ant.project.name}.jar" />
+	<property name="ant.home.island" value="D:/ENV/ant" />
+
+	<path id="project.classpath">
+		<fileset dir="${src.lib.dir}" includes="**/*"></fileset>
+	</path>
+	<!-- ================================= Build Apps =============================== -->
+
+	<target name="init" description="init the build task...">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+	</target>
+
+	<target name="dist" description="the entry of the project." depends="init,compile,build">
+		<echo>completly, run ok...</echo>
+	</target>
+
+	<!-- 编译 -->
+		<target name="compile" depends="" description="compile the source files">
+			<mkdir dir="${build.bin.dir}" />
+			<javac srcdir="${src.dir}" destdir="${build.bin.dir}" target="1.7" includeAntRuntime="false">
+				<classpath refid="project.classpath" />
+			</javac>
+		</target>
+
+	<!-- 打包成jar -->
+		<target name="build" depends="" description="make .jar file">
+			<jar destfile="${build.dir}/${jar.name}" basedir="${build.bin.dir}"></jar>
+			<copy file="${build.dir}/${jar.name}" todir="." />
+			<copy file="${build.dir}/${jar.name}" todir="${ant.home.island}/lib" />
+		</target>
+
+</project>
